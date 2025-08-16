@@ -21,7 +21,7 @@ export type SearchResult = {
 // EJEMPLO: export const SOUND_CLOUD_CLIENT_ID = 'abc123...'
 export const SOUND_CLOUD_CLIENT_ID: string | null = '3Y3mBjzXGjRmsKq5Ue5vOYy09ZKSRruL'
 
-const API_BASE_URL = 'https://api-v2.soundcloud.com'
+const API_BASE_URL = 'https://api-v2.soundcloud.com' // Production: direct API calls
 
 // Opcional: token OAuth fijo (si no es null, se enviará en Authorization)
 export const SOUND_CLOUD_OAUTH_TOKEN: string | null = '2-306535-1480175371-5FkiziXo1H3ai'
@@ -109,6 +109,7 @@ export async function resolveStreamUrl(
   // Helper para resolver un transcoding → stream URL
   async function resolveStreamForTranscoding(t: any): Promise<string | null> {
     let target = t.url as string
+    // In production, use the full URL directly
     if (import.meta.env.DEV) {
       try {
         const u = new URL(t.url)
@@ -191,7 +192,7 @@ export async function resolveStreamUrl(
     if (import.meta.env.DEV) console.debug('[sc] no playable stream found', { id })
     return { url: null, kind: 'unknown' }
   }
-  // En dev, forzar proxy de dominios de media conocidos
+  // In production, use the full URL directly; in dev, proxy through local server
   if (import.meta.env.DEV && directUrl) {
     try {
       const u = new URL(directUrl)
