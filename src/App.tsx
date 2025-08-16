@@ -35,7 +35,7 @@ type Row = {
 }
 
 // Backend API base URL (configure via Vite env: VITE_TRACKLIST_API_BASE)
-const API_BASE: string = (import.meta as any).env?.VITE_TRACKLIST_API_BASE || 'http://localhost:8420'
+const API_BASE: string = (import.meta as any).env?.VITE_TRACKLIST_API_BASE || 'https://tracklistdownloader-api.dq97zj.easypanel.host/'
 
 export default function App() {
   // Client ID fijo para una sola app (lee desde soundcloud.ts)
