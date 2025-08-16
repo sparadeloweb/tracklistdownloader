@@ -5,8 +5,8 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Install deps first for better layer caching
-COPY package.json package-lock.json ./
-RUN npm ci --no-audit --fund=false
+COPY package.json ./
+RUN npm install --no-audit --fund=false
 
 # Copy rest of the source and build
 COPY . .
