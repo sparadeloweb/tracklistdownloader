@@ -55,8 +55,15 @@ export async function searchTracks(
     params.facet = 'genre'
     ;(params as any)['filter.genre'] = opts.genre
   }
-  const { data } = await api.get<SearchResult>('/search/tracks', { params })
-  return (data.collection ?? []).map((t: any) => ({
+  
+  console.log('[searchTracks] Buscando:', query, 'con params:', params)
+  
+  const response = await api.get<SearchResult>('/search/tracks', { params })
+  console.log('[searchTracks] Respuesta completa:', response)
+  console.log('[searchTracks] Data:', response.data)
+  console.log('[searchTracks] Collection:', response.data?.collection)
+  
+  const tracks = (response.data?.collection ?? []).map((t: any) => ({
     id: t.id,
     title: t.title,
     user: { username: t?.user?.username },
@@ -66,6 +73,9 @@ export async function searchTracks(
     downloadable: t.downloadable,
     has_downloads_left: t.has_downloads_left,
   }))
+  
+  console.log('[searchTracks] Tracks procesados:', tracks)
+  return tracks
 }
 
 export async function fetchTrackDetails(id: number): Promise<Partial<SoundCloudTrack>> {

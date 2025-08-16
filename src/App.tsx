@@ -245,9 +245,13 @@ export default function App() {
       const updates: Row[] = await Promise.all(
         initial.map(async (row) => {
           try {
+            console.log('[handleSearch] Buscando para:', row.originalQuery)
             const resultsRaw = await searchTracks(row.originalQuery, resultsLimit)
+            console.log('[handleSearch] Resultados raw:', resultsRaw)
             const results = await enrichTracksDownloadInfo(resultsRaw)
+            console.log('[handleSearch] Resultados enriquecidos:', results)
             const { best, score } = findBestMatch(row.originalQuery, results)
+            console.log('[handleSearch] Mejor match:', best, 'score:', score)
             const updated = {
               ...row,
               loading: false,
@@ -255,9 +259,11 @@ export default function App() {
               bestScore: score,
               candidates: results,
             }
+            console.log('[handleSearch] Row actualizada:', updated)
             setProgressDone((d) => d + 1)
             return updated
           } catch (err: any) {
+            console.error('[handleSearch] Error:', err)
             setProgressDone((d) => d + 1)
             return { ...row, loading: false, error: err?.message ?? 'Error desconocido' }
           }
