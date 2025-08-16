@@ -55,7 +55,7 @@ export default defineConfig(({ command, mode }) => {
     }),
     // Production optimizations
     build: {
-      minify: 'terser',
+      minify: 'esbuild', // Faster than terser, included with Vite
       sourcemap: false,
       rollupOptions: {
         output: {
