@@ -21,7 +21,7 @@ export type SearchResult = {
 // EJEMPLO: export const SOUND_CLOUD_CLIENT_ID = 'abc123...'
 export const SOUND_CLOUD_CLIENT_ID: string | null = '3Y3mBjzXGjRmsKq5Ue5vOYy09ZKSRruL'
 
-const API_BASE_URL = 'https://api-v2.soundcloud.com' // Production: direct API calls
+const API_BASE_URL = import.meta.env.DEV ? '/sc' : 'https://tracklistdownloader-api.dq97zj.easypanel.host/api/sc'
 
 // Opcional: token OAuth fijo (si no es null, se enviará en Authorization)
 export const SOUND_CLOUD_OAUTH_TOKEN: string | null = '2-306535-1480175371-5FkiziXo1H3ai'
@@ -110,17 +110,15 @@ export async function resolveStreamUrl(
   async function resolveStreamForTranscoding(t: any): Promise<string | null> {
     let target = t.url as string
     // In production, use the full URL directly
-    if (import.meta.env.DEV) {
-      try {
-        const u = new URL(t.url)
-        if (u.hostname.includes('api-v2.soundcloud.com')) {
-          target = `${u.pathname}${u.search}`
-        } else if (u.hostname.includes('api.soundcloud.com')) {
-          target = `/sc1${u.pathname}${u.search}`
-        }
-      } catch {}
-      if (import.meta.env.DEV) console.debug('[sc] transcodeTarget', { id, preset: t?.preset, protocol: t?.format?.protocol, target })
-    }
+    try {
+      const u = new URL(t.url)
+      if (u.hostname.includes('api-v2.soundcloud.com')) {
+        target = import.meta.env.DEV ? `${u.pathname}${u.search}` : `https://tracklistdownloader-api.dq97zj.easypanel.host/api/sc${u.pathname}${u.search}`
+      } else if (u.hostname.includes('api.soundcloud.com')) {
+        target = import.meta.env.DEV ? `/sc1${u.pathname}${u.search}` : `https://tracklistdownloader-api.dq97zj.easypanel.host/api/sc1${u.pathname}${u.search}`
+      }
+    } catch {}
+    if (import.meta.env.DEV) console.debug('[sc] transcodeTarget', { id, preset: t?.preset, protocol: t?.format?.protocol, target })
     const { data: s } = await api.get<any>(target, {
       params: {
         client_id: SOUND_CLOUD_CLIENT_ID ?? '',
@@ -192,7 +190,7 @@ export async function resolveStreamUrl(
     if (import.meta.env.DEV) console.debug('[sc] no playable stream found', { id })
     return { url: null, kind: 'unknown' }
   }
-  // In production, use the full URL directly; in dev, proxy through local server
+  // In production, return the direct URL as-is since we only need search functionality
   if (import.meta.env.DEV && directUrl) {
     try {
       const u = new URL(directUrl)

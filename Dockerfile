@@ -15,8 +15,8 @@ RUN npm run build
 ## 2) Runtime stage
 FROM nginx:1.27-alpine
 
-# Nginx config (includes SPA fallback and API proxies)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Simple nginx config for SPA
+RUN echo 'server { listen 80; root /usr/share/nginx/html; index index.html; location / { try_files $uri $uri/ /index.html; } }' > /etc/nginx/conf.d/default.conf
 
 # Static assets
 COPY --from=builder /app/dist /usr/share/nginx/html
