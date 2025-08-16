@@ -26,6 +26,9 @@ export type Messages = {
   results_for: (q: string) => string
   dl_free: string
   dl_off: string
+  footer_created_by: string
+  footer_clone_project: string
+  footer_improve_project: string
 }
 
 export const STRINGS: Record<Locale, Messages> = {
@@ -53,6 +56,9 @@ export const STRINGS: Record<Locale, Messages> = {
     results_for: (q: string) => `Results for "${q}"`,
     dl_free: 'Free',
     dl_off: 'Off',
+    footer_created_by: 'Created by',
+    footer_clone_project: 'Clone this project to improve it or add personal touches',
+    footer_improve_project: 'Improve this project',
   },
   es: {
     tab_list: 'Listado',
@@ -78,6 +84,9 @@ export const STRINGS: Record<Locale, Messages> = {
     results_for: (q: string) => `Resultados para "${q}"`,
     dl_free: 'Free',
     dl_off: 'Off',
+    footer_created_by: 'Creado por',
+    footer_clone_project: 'Clona este proyecto para mejorarlo o darle toques personales',
+    footer_improve_project: 'Mejora este proyecto',
   },
 }
 

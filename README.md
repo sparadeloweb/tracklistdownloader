@@ -1,69 +1,119 @@
-# React + TypeScript + Vite
+# 🎵 Tracklist Downloader
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive web application for downloading SoundCloud tracks and playlists. Built with React, TypeScript, and Vite, featuring a beautiful UI with customizable themes.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **🔍 Smart Search**: Find tracks using SoundCloud's search API with intelligent matching
+- **📱 Responsive Design**: Works perfectly on desktop, tablet, and mobile devices
+- **🎨 Customizable Themes**: Choose from multiple color themes (orange, blue, green, purple, red)
+- **🌍 Multi-language**: Available in English and Spanish
+- **📥 Batch Downloads**: Download multiple tracks at once
+- **🎵 Audio Preview**: Listen to tracks before downloading
+- **⚡ Fast & Modern**: Built with Vite for lightning-fast development and builds
 
-## Expanding the ESLint configuration
+## 🚀 Live Demo
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Visit the live application: [Tracklist Downloader](https://tracklistdownloader-front.dq97zj.easypanel.host/)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🛠️ Tech Stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- **Frontend**: React 18 + TypeScript + Vite
+- **UI Components**: Radix UI + Tailwind CSS
+- **State Management**: React Hooks
+- **Internationalization**: Custom i18n system
+- **Audio Player**: HLS.js for streaming support
+- **Deployment**: Docker + EasyPanel
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📦 Installation
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+
+### Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/sparadeloweb/tracklistdownloader.git
+   cd tracklistdownloader
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure SoundCloud API**
+   - Get your SoundCloud Client ID
+   - Add it to `src/lib/soundcloud.ts`
+
+4. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+5. **Build for production**
+   ```bash
+   npm run build
+   ```
+
+## 🐳 Docker Deployment
+
+The application is containerized and ready for deployment:
+
+```bash
+docker build -t tracklistdownloader:latest .
+docker run -p 80:80 tracklistdownloader:latest
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🔧 Configuration
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Environment Variables
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- `VITE_TRACKLIST_API_BASE`: Backend API base URL (optional)
+
+### SoundCloud API
+
+You'll need a SoundCloud Client ID to use the search functionality. Add it to `src/lib/soundcloud.ts`.
+
+## 📱 Usage
+
+1. **Add Tracklist**: Paste your track URLs (one per line)
+2. **Search & Match**: The app will automatically search and find the best matches
+3. **Download**: Choose individual tracks or batch download all
+4. **Preview**: Listen to tracks before downloading
+
+## 🤝 Contributing
+
+This project is open for contributions! Feel free to:
+
+- 🐛 Report bugs
+- 💡 Suggest new features
+- 🔧 Submit pull requests
+- 📖 Improve documentation
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 👨‍💻 Author
+
+**Created by [Santiago Paradelo](https://www.linkedin.com/in/santiagorafaelparadelo/)**
+
+- 💼 [LinkedIn Profile](https://www.linkedin.com/in/santiagorafaelparadelo/)
+- 🐙 [GitHub Profile](https://github.com/sparadeloweb)
+
+## 🔗 Related Projects
+
+- **[Backend API](https://github.com/sparadeloweb/tracklistdownloaderapi)**: FastAPI backend for SoundCloud downloads
+- **[Frontend App](https://github.com/sparadeloweb/tracklistdownloader)**: This React frontend application
+
+## 🌟 Star History
+
+If you find this project useful, please consider giving it a ⭐ on GitHub!
+
+---
+
+**Happy downloading! 🎵**
