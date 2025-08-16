@@ -21,7 +21,7 @@ export type SearchResult = {
 // EJEMPLO: export const SOUND_CLOUD_CLIENT_ID = 'abc123...'
 export const SOUND_CLOUD_CLIENT_ID: string | null = '3Y3mBjzXGjRmsKq5Ue5vOYy09ZKSRruL'
 
-const API_BASE_URL = '/sc'
+const API_BASE_URL = 'https://api-v2.soundcloud.com'
 
 // Opcional: token OAuth fijo (si no es null, se enviará en Authorization)
 export const SOUND_CLOUD_OAUTH_TOKEN: string | null = '2-306535-1480175371-5FkiziXo1H3ai'
@@ -109,15 +109,17 @@ export async function resolveStreamUrl(
   // Helper para resolver un transcoding → stream URL
   async function resolveStreamForTranscoding(t: any): Promise<string | null> {
     let target = t.url as string
-    try {
-      const u = new URL(t.url)
-      if (u.hostname.includes('api-v2.soundcloud.com')) {
-        target = `${u.pathname}${u.search}`
-      } else if (u.hostname.includes('api.soundcloud.com')) {
-        target = `/sc1${u.pathname}${u.search}`
-      }
-    } catch {}
-    if (import.meta.env.DEV) console.debug('[sc] transcodeTarget', { id, preset: t?.preset, protocol: t?.format?.protocol, target })
+    if (import.meta.env.DEV) {
+      try {
+        const u = new URL(t.url)
+        if (u.hostname.includes('api-v2.soundcloud.com')) {
+          target = `${u.pathname}${u.search}`
+        } else if (u.hostname.includes('api.soundcloud.com')) {
+          target = `/sc1${u.pathname}${u.search}`
+        }
+      } catch {}
+      if (import.meta.env.DEV) console.debug('[sc] transcodeTarget', { id, preset: t?.preset, protocol: t?.format?.protocol, target })
+    }
     const { data: s } = await api.get<any>(target, {
       params: {
         client_id: SOUND_CLOUD_CLIENT_ID ?? '',
@@ -189,8 +191,8 @@ export async function resolveStreamUrl(
     if (import.meta.env.DEV) console.debug('[sc] no playable stream found', { id })
     return { url: null, kind: 'unknown' }
   }
-  // Forzar proxy de dominios de media conocidos para evitar CORS
-  if (directUrl) {
+  // En dev, forzar proxy de dominios de media conocidos
+  if (import.meta.env.DEV && directUrl) {
     try {
       const u = new URL(directUrl)
       if (u.hostname.includes('cf-media.sndcdn.com')) {
