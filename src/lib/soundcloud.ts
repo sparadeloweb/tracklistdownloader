@@ -61,9 +61,24 @@ export async function searchTracks(
   const response = await api.get<SearchResult>('/search/tracks', { params })
   console.log('[searchTracks] Respuesta completa:', response)
   console.log('[searchTracks] Data:', response.data)
-  console.log('[searchTracks] Collection:', response.data?.collection)
   
-  const tracks = (response.data?.collection ?? []).map((t: any) => ({
+  // El backend está devolviendo un string JSON, necesitamos parsearlo
+  let data: any
+  if (typeof response.data === 'string') {
+    try {
+      data = JSON.parse(response.data)
+      console.log('[searchTracks] Data parseado:', data)
+    } catch (e) {
+      console.error('[searchTracks] Error parseando JSON:', e)
+      throw new Error('Respuesta inválida del backend')
+    }
+  } else {
+    data = response.data
+  }
+  
+  console.log('[searchTracks] Collection:', data?.collection)
+  
+  const tracks = (data?.collection ?? []).map((t: any) => ({
     id: t.id,
     title: t.title,
     user: { username: t?.user?.username },
